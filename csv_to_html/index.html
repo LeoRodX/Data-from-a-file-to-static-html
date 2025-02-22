@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV to HTML Table</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <h1>Data from CSV</h1>
+    <table id="csvTable" border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Функция для загрузки и отображения данных из CSV
+        function loadCSV() {
+            // Путь к CSV-файлу
+            const csvFilePath = 'data.csv';
+
+            // Используем PapaParse для чтения CSV-файла
+            Papa.parse(csvFilePath, {
+                download: true,
+                header: true,
+                dynamicTyping: true,
+                complete: function(results) {
+                    const data = results.data;
+                    const tableBody = document.querySelector('#csvTable tbody');
+
+                    // Очищаем таблицу перед добавлением новых данных
+                    tableBody.innerHTML = '';
+
+                    // Добавляем данные в таблицу
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.Name}</td>
+                            <td>${row.Age}</td>
+                            <td>${row.City}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                },
+                error: function(err) {
+                    console.error('Error loading CSV:', err);
+                }
+            });
+        }
+
+        // Загружаем данные при загрузке страницы
+        window.onload = loadCSV;
+    </script>
+</body>
+</html>
