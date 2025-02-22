@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример загрузки данных из JSON</title>
+</head>
+<body>
+    <h1>Пользователи</h1>
+    <ul id="user-list"></ul>
+
+    <script>
+        // Функция для загрузки данных из JSON
+        async function loadUsers() {
+            try {
+                // Загружаем данные из JSON-файла
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                // Получаем элемент списка
+                const userList = document.getElementById('user-list');
+
+                // Проходим по каждому пользователю и добавляем его в список
+                data.users.forEach(user => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Имя: ${user.name}, Возраст: ${user.age}`;
+                    userList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error);
+            }
+        }
+
+        // Вызываем функцию загрузки данных при загрузке страницы
+        window.onload = loadUsers;
+    </script>
+</body>
+</html>
